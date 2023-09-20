@@ -16,7 +16,7 @@ module.exports = function BroochFix(mod) {
 
     function equipedBrooch()
     {
-        return mod.game.inventory.equipment.slots['20'].id;
+        return mod.game.inventory.equipment.slots['20'] ? mod.game.inventory.equipment.slots['20'].id : -1;
     }
 
     function setBroochCooldown(cooldown)
@@ -84,6 +84,29 @@ module.exports = function BroochFix(mod) {
             return false;
         }
     })
+
+    // stun fix by ?
+    const { player } = mod.require.library;
+
+    mod.hook('C_NOTIMELINE_SKILL', 3, event => {
+		if (event.skill.id == BROOCH_SKILL_ID) { 
+            useBrooch(); 
+            return false 
+        }
+	})
+
+	function useBrooch() {
+		if (isNewBrooch(equipedBrooch())) {
+			mod.send('C_USE_ITEM', 3, {
+				gameId: mod.game.me.gameId, 
+                id: equipedBrooch(), 
+                amount: 1, 
+                loc: player.loc, 
+                w: player.loc.w, 
+                unk4: true
+			})
+        }
+    }
 
     this.destructor = () => {
     }
