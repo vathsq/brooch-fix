@@ -71,6 +71,16 @@ module.exports = function BroochFix(mod) {
     mod.hook("S_START_COOLTIME_SKILL", 3, event => {
         if (event.skill.id == BROOCH_SKILL_ID)
         {
+            if(event.cooldown > 156000)
+            {
+                event.cooldown = BROOCH_COOLDOWN * 1000;
+                return true;
+            }
+            if(event.cooldown == 0)
+            {
+                setBroochCooldown(0)
+                return;
+            }
             return false;
         }
     })
