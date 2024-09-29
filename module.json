@@ -5,7 +5,7 @@
         "guiName": "brooch-fix",
         "reloadable": true
     },
-    "servers": ["https://raw.githubusercontent.com/noctilucentgames/brooch-fix/master/"],
+    "servers": ["https://raw.githubusercontent.com/vathsq/brooch-fix/master/"],
     "author": "Nocti",
     "description": "Fixes brooch cooldown displayed on item/shortcut",
     "disableAutoUpdate": false
