@@ -9,7 +9,7 @@ module.exports = function BroochFix(mod) {
     mod.game.initialize("me");
     mod.game.initialize("inventory");
 
-    let timer_abn_begin = null;
+    let timer = null;
     function isNewBrooch(id) {
         return (BROOCHES.indexOf(id) > -1);
     }
@@ -47,7 +47,7 @@ module.exports = function BroochFix(mod) {
 
     mod.hook("S_ABNORMALITY_END", 1, event => {
         if (event.id == BROOCH_CD_DEBUFF && mod.game.me.is(event.target)) {
-            mod.clearTimeout(timer_abn_begin);
+            mod.clearTimeout(timer);
             setSkillCooldown(0);
             setBroochCooldown(0);
         }
@@ -57,14 +57,14 @@ module.exports = function BroochFix(mod) {
         if (event.id == BROOCH_CD_DEBUFF && mod.game.me.is(event.target)) {
             setSkillCooldown(parseInt(event.duration));
             let remainder = event.duration % BigInt(1000);
-            timer_abn_begin = mod.setTimeout(() => {
+            timer = mod.setTimeout(() => {
                 setBroochCooldown(parseInt((event.duration - remainder) / BigInt(1000)));
             }, parseInt(remainder));
         }
 
         if (mod.game.me.is(event.target) && RESET_BUFFS.indexOf(event.id) != -1) {
-            if (timer_abn_begin != null) {
-                mod.clearTimeout(timer_abn_begin);
+            if (timer != null) {
+                mod.clearTimeout(timer);
             }
             setSkillCooldown(0);
             setBroochCooldown(0);
